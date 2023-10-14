@@ -5,6 +5,6 @@ conneteDB();
 
 app.listen(process.env.PORT, (req, res) => {
   console.log(
-    `Server is Working on Port ${process.env.PORT} in ${process.env.NODE_ENV} Mde`
+    `Server is Working on Port ${process.env.PORT} in ${process.env.NODE_ENV} Mode`
   );
 });
