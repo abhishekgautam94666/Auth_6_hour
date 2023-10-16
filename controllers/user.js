@@ -26,7 +26,7 @@ export const register = async (req, res, next) => {
 };
 
 // --------Login------------
-export const login = async (req, res,next) => {
+export const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email }).select("+password");
@@ -40,7 +40,6 @@ export const login = async (req, res,next) => {
     if (!isMatch) {
       return next(new ErrorHandler("Invalid Email or password", 400));
     }
-
     sendCookie(user, res, `Wecome back,${user.name}`, 200);
   } catch (error) {
     res.status(404).json({
@@ -65,8 +64,13 @@ export const getMyProfile = (req, res) => {
 export const logout = (req, res) => {
   res
     .status(200)
-    .cookie("token", "", { expires: new Date(Date.now()) })
+    .cookie("token", "", {
+      expires: new Date(Date.now()),
+      sameSite: process.env.NODE_ENV === "Development" ? "lax" : "none",
+      secure: process.env.NODE_ENV === "Development" ? false : true,
+    })
     .json({
       success: true,
+      message: "logout successfully",
     });
 };
